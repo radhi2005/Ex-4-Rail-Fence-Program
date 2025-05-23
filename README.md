@@ -1,75 +1,86 @@
-# Ex--5-Rail-Fence-Program
+# EX-NO14-HASH-ALGORITHM
 
-# IMPLEMENTATION OF RAIL FENCE – ROW & COLUMN TRANSFORMATION TECHNIQUE
+## AIM:
+To implement HASH ALGORITHM
 
-# AIM:
+## ALGORITHM:
 
-# To write a C program to implement the rail fence transposition technique.
+1. Hash Algorithm is used to convert input data (message) into a fixed-size string, typically a hash value, which uniquely represents the original data.
 
-# DESCRIPTION:
+2. Initialization:
+   - Choose a hash function \( H \) (e.g., SHA-256, MD5, etc.).
+   - The message \( M \) to be hashed is input.
 
-In the rail fence cipher, the plain text is written downwards and diagonally on successive "rails" of an imaginary fence, then moving up when we reach the bottom rail. When we reach the top rail, the message is written downwards again until the whole plaintext is written out. The message is then read off in rows.
+3. Message Preprocessing:
+   - Break the message \( M \) into fixed-size blocks. If necessary, pad the message to make it compatible with the block size required by the hash function.
+   - For example, in SHA-256, the message is padded to ensure that its length is a multiple of 512 bits.
 
-# ALGORITHM:
+4. Hash Calculation:
+   - Process the message block by block, applying the hash function \( H \) iteratively to produce an intermediate hash value.
+   - For SHA-256, each block is processed through a series of logical operations, bitwise manipulations, and modular additions.
 
-STEP-1: Read the Plain text.
+5. Output:
+   - After all blocks are processed, the final hash value (digest) is produced, which is a fixed-size output (e.g., 256-bit for SHA-256).
+   - The resulting hash is unique to the input message, meaning even a small change in the message will result in a completely different hash.
 
-
-STEP-2: Arrange the plain text in row columnar matrix format.
-
-
-STEP-3: Now read the keyword depending on the number of columns of the plain text.
-
-
-STEP-4: Arrange the characters of the keyword in sorted order and the corresponding columns of the plain text.
+6. Security: The strength of the hash algorithm lies in its collision resistance, ensuring that it is computationally infeasible to find two different messages that produce the same hash value.
 
 
-STEP-5: Read the characters row wise or column wise in the former order to get the cipher text.
-
-# PROGRAM
+## Program:
+## DEVELPRD BY:RADHIMEENA M
+## REG NO:212223040159
 ```
-PROGRAM:
 #include <stdio.h>
 #include <string.h>
+#define MAX 100
+void encrypt(char *plaintext, int shift, char *ciphertext) {
+ int i;
+ for (i = 0; plaintext[i] != '\0'; i++) {
+ char ch = plaintext[i];
+ if (ch >= 'A' && ch <= 'Z') {
+ ciphertext[i] = (ch + shift - 'A') % 26 + 'A';
+ } else if (ch >= 'a' && ch <= 'z') {
+ ciphertext[i] = (ch + shift - 'a') % 26 + 'a';
+ } else {
+ ciphertext[i] = ch;
+ }
+ }
+ ciphertext[i] = '\0';
+}
+void decrypt(char *ciphertext, int shift, char *plaintext) {
+ int i;
+ for (i = 0; ciphertext[i] != '\0'; i++) {
+ char ch = ciphertext[i];
+ if (ch >= 'A' && ch <= 'Z') {
+ plaintext[i] = (ch - shift - 'A' + 26) % 26 + 'A';
+ } else if (ch >= 'a' && ch <= 'z') {
+ plaintext[i] = (ch - shift - 'a' + 26) % 26 + 'a';
+ } else {
+ plaintext[i] = ch;
+ }
+ }
+ plaintext[i] = '\0';
+}
 int main() {
-    int i, j, len, rails, count, dir;
-    char str[1000];
-    int code[100][1000] = {0};  // Initialize the entire array to 0
-    printf("Enter a Secret Message:\n");
-    scanf("%s",str);
-    len = strlen(str);
-    printf("Enter number of rails:\n");
-    scanf("%d", &rails);
-    count = 0;
-    i = 0;
-    dir = 1;  
-    for (j = 0; j < len; j++) {
-        code[i][j] = str[j];
-        // Change direction if we reach the top or bottom rail
-        if (i == 0) {
-            dir = 1;
-        } else if (i == rails - 1) {
-            dir = -1;
-        }
-        i += dir;
-    }
-    printf("Encrypted Message:\n");
-    // Print the encrypted message
-    for (i = 0; i < rails; i++) {
-        for (j = 0; j < len; j++) {
-            if (code[i][j] != 0) {
-                printf("%c", code[i][j]);
-            }
-        }
-    }
-    printf("\n");
-    return 0;
+ char plaintext[MAX], ciphertext[MAX];
+ int shift;
+ printf("\nEnter the plaintext: ");
+ fgets(plaintext, sizeof(plaintext), stdin);
+ plaintext[strcspn(plaintext, "\n")] = 0;
+ printf("\nEnter the shift value (1-25): ");
+ scanf("%d", &shift);
+ encrypt(plaintext, shift, ciphertext);
+ printf("\nEncrypted text: %s\n", ciphertext);
+ decrypt(ciphertext, shift, plaintext);
+ printf("Decrypted text: %s\n", plaintext);
+ return 0;
 }
 ```
 
-# OUTPUT
-![image](https://github.com/user-attachments/assets/7eede52b-94eb-4c45-a5ea-d25d27ae8741)
+## Output:
+
+![image](https://github.com/user-attachments/assets/5232779e-e682-4794-b51b-fe34d6f8a128)
 
 
-# RESULT
+## Result:
 The program is executed successfully.
